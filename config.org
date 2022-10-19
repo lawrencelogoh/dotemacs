@@ -52,6 +52,7 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
+  (setq ring-bell-function 'ignore)
 
   ;; function to reload configuration
   (defun config-reload ()
@@ -110,7 +111,7 @@
       (setq go-format-command "gofmt")
       (reformatter-define go-format
 	:program go-format-command
-	:lighter " GF")
+	:lcrighter " GF")
 
       ;; py
 
@@ -145,9 +146,10 @@
 ** Global Keybindings
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-c c") 'org-capture)
+     (global-set-key (kbd "C-c t") 'ansi-term)
      (global-set-key (kbd "C-c r") 'config-reload)
      (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
-     (global-unset-key (kbd "C-z"))
+     (global-set-key (kbd "C-z") 'replace-string)
      (global-set-key (kbd "C-x g") 'magit-status)
    #+end_src
 
