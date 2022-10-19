@@ -111,7 +111,7 @@
       (setq go-format-command "gofmt")
       (reformatter-define go-format
 	:program go-format-command
-	:lcrighter " GF")
+	:lighter " GF")
 
       ;; py
 
