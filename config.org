@@ -1,51 +1,8 @@
-* My emacs config
+* Lawrence Logoh's emacs config
 
-** Install packages
-   #+begin_src emacs-lisp
-     (require 'package)
-     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-
-     (when (not package-archive-contents)
-       (package-refresh-contents))
-     ;; install use-package if it's not installed
-     (unless (package-installed-p 'use-package)
-       (package-install 'use-package))
-
-     ;; always ensure packages are installed
-     (require 'use-package-ensure)
-     (setq use-package-always-ensure t)
-
-     ;; appearance
-     (use-package modus-themes
-       :init
-       (setq modus-themes-slanted-constructs t
-	     modus-themes-bold-constructs t)
-       (modus-themes-load-themes)
-       :config
-       (modus-themes-load-operandi))
-
-     ;; programming
-
-     (use-package go-mode)
-     (use-package python-mode)
-     (use-package pydoc)
-     (use-package company) ;; for completion
-     (use-package reformatter)
-     (use-package eglot) ;; lsp client
-     (use-package emmet-mode)
-     (use-package magit) ; an interface to git
-     (use-package htmlize)
-     (use-package windresize)
-
-
-
-     ;; misc
-     (use-package markdown-mode)
-
-   #+end_src
-  
-** Quality of life
+* Quality of life
 #+begin_src emacs-lisp
+
   (setq inhibit-startup-message t)
 
   ;; disable tool, menu and scroll bar
@@ -56,29 +13,63 @@
 
   ;; function to reload configuration
   (defun config-reload ()
-      (interactive)
-      (org-babel-load-file (expand-file-name "~/.config/emacs/config.org"))
-      ) 
+	(interactive)
+	(org-babel-load-file (expand-file-name "~/.config/emacs/config.org"))
+	) 
 
   ;; refresh buffer when file is modified on disk
   (global-auto-revert-mode 1)
 
   ;; font
   (add-to-list 'default-frame-alist
-	       '(font . "Hack-14"))
+		 '(font . "Hack-14"))
 
+
+  ;; theme
+
+  (setq modus-themes-slanted-constructs t
+	modus-themes-bold-constructs t)
+  (modus-themes-load-themes)
+  (modus-themes-load-vivendi)
+  
   (put 'dired-find-alternate-file 'disabled nil)
 
-  (setq backup-directory-alist '(("." . "~/.bak"))
-	backup-by-copying t    
-	version-control t      
-	delete-old-versions t  
-	kept-new-versions 5   
-	kept-old-versions 2    
-	)
+    (setq backup-directory-alist '(("." . "~/.bak"))
+	  backup-by-copying t    
+	  version-control t      
+	  delete-old-versions t  
+	  kept-new-versions 5   
+	  kept-old-versions 2    
+	  )
+
 #+end_src
 
-** Productivity
+* Install Packages
+#+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	(bootstrap-version 6))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+	  (url-retrieve-synchronously
+	   "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	   'silent 'inhibit-cookies)
+	(goto-char (point-max))
+	(eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  (straight-use-package 'python-mode)
+  (straight-use-package 'go-mode)
+  (straight-use-package 'magit)
+  (straight-use-package 'reformatter)
+
+  (straight-use-package 'markdown-mode)
+
+#+end_src
+
+
+* "Productivity"
 #+begin_src emacs-lisp
   (setq org-todo-keywords
 	'((sequence "TODO" "DOING" "WAITING" "|" "DONE" )))
@@ -90,67 +81,26 @@
 	  ))
 
   ;; Colors are from https://protesilaos.com/emacs/modus-themes-colors
+#+end_src
+
+
+* Writing
+#+begin_src emacs-lisp
+  ;; spellcheck
+#+end_src
+* Programming
+#+begin_src emacs-lisp
+  ;; formatting
+
+  ;; hooks
+#+end_src
+* Global Keybindings
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c t") 'ansi-term)
+  (global-set-key (kbd "C-c r") 'config-reload)
+  (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
+  (global-set-key (kbd "C-z") 'replace-string)
+  (global-set-key (kbd "C-x g") 'magit-status)
 
 #+end_src
-** Writing
-*** Spellcheck
-    #+begin_src emacs-lisp
-      (setq ispell-program-name "aspell")
-      (setq ispell-personal-dictionary "~/.config/.aspell.en.pws")
-      ;; enable spellcheck in text-modes
-      (add-hook 'text-mode-hook 'flyspell-mode)
-      ;; enable spellcheck for comments in prog-mode
-      (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-
-    #+end_src
-** Programming
-*** Code formatting
-    #+begin_src emacs-lisp
-      (require 'reformatter)
-      ;; go
-      (setq go-format-command "gofmt")
-      (reformatter-define go-format
-	:program go-format-command
-	:lighter " GF")
-
-      ;; py
-
-      (setq py-format-command "black")
-      (reformatter-define py-format
-	:program py-format-command
-	:args '("-")
-	:lighter " PF")
-
-      ;; c 
-      (setq c-format-command "cfmt")
-      (reformatter-define c-format
-	:program c-format-command
-	:args '("format")
-	:lighter " CF")
-
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((python . t)))
-
-      ;; hooks
-      (add-hook 'go-mode-hook 'go-format-on-save-mode)
-      (add-hook 'python-mode-hook 'py-format-on-save-mode)
-    #+end_src
-*** LSP
-    #+begin_src emacs-lisp
-      (add-hook 'prog-mode-hook 'company-mode)
-      (add-hook 'python-mode-hook 'eglot-ensure)
-      (add-hook 'go-mode-hook 'eglot-ensure)
-      (add-hook 'js-mode-hook 'eglot-ensure)
-    #+end_src
-** Global Keybindings
-   #+begin_src emacs-lisp
-     (global-set-key (kbd "C-c c") 'org-capture)
-     (global-set-key (kbd "C-c t") 'ansi-term)
-     (global-set-key (kbd "C-c r") 'config-reload)
-     (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
-     (global-set-key (kbd "C-z") 'replace-string)
-     (global-set-key (kbd "C-x g") 'magit-status)
-   #+end_src
-
-

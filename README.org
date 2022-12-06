@@ -1,2 +1,8 @@
 * Lawrence Logoh's emacs config
+** How to use
+Clone this repo and launch emacs
+#+begin_src shell
+  git clone https://github.com/lawrencelogoh/dotemacs ~/.config/emacs
+#+end_src
+
 
