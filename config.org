@@ -26,12 +26,15 @@
 
 
   ;; theme
+  (custom-set-faces
+   `(fringe ((t (:background nil)))))
 
   (setq modus-themes-slanted-constructs t
 	modus-themes-bold-constructs t)
   (modus-themes-load-themes)
   (modus-themes-load-vivendi)
-  
+
+
   (put 'dired-find-alternate-file 'disabled nil)
 
     (setq backup-directory-alist '(("." . "~/.bak"))
@@ -65,6 +68,7 @@
   (straight-use-package 'reformatter)
 
   (straight-use-package 'markdown-mode)
+  (straight-use-package 'olivetti)
 
 #+end_src
 
@@ -90,9 +94,10 @@
 #+end_src
 * Programming
 #+begin_src emacs-lisp
-  ;; formatting
+    ;; formatting
 
-  ;; hooks
+    ;; hooks
+  (add-hook 'prog-mode-hook 'linum-mode)
 #+end_src
 * Global Keybindings
 #+begin_src emacs-lisp
