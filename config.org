@@ -1,4 +1,11 @@
-* Lawrence Logoh's emacs config
+* Lawrence Logoh's emacs config                                   :noexport:
+* Contents                                                        :TOC:
+- [[#quality-of-life][Quality of life]]
+- [[#install-packages][Install Packages]]
+- [[#productivity]["Productivity"]]
+- [[#writing][Writing]]
+- [[#programming][Programming]]
+- [[#global-keybindings][Global Keybindings]]
 
 * Quality of life
 #+begin_src emacs-lisp
@@ -20,10 +27,14 @@
   ;; refresh buffer when file is modified on disk
   (global-auto-revert-mode 1)
 
+  (setq org-startup-with-inline-images t)
+  (setq org-image-actual-width nil)
+
   ;; font
   (add-to-list 'default-frame-alist
 		 '(font . "Hack-14"))
-
+  (setq-default org-display-custom-times t)
+  (setq org-time-stamp-custom-formats '("<%d-%m-%Y>" . "<%d-%m-%Y %H:%M>"))
 
   ;; theme
   (custom-set-faces
@@ -31,11 +42,10 @@
 
   (setq modus-themes-slanted-constructs t
 	modus-themes-bold-constructs t)
-  (modus-themes-load-themes)
-  (modus-themes-load-vivendi)
-
+  (load-theme 'modus-vivendi)
 
   (put 'dired-find-alternate-file 'disabled nil)
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
     (setq backup-directory-alist '(("." . "~/.bak"))
 	  backup-by-copying t    
@@ -69,29 +79,57 @@
 
   (straight-use-package 'markdown-mode)
   (straight-use-package 'olivetti)
+  (straight-use-package 'toc-org)
 
 #+end_src
 
 
 * "Productivity"
 #+begin_src emacs-lisp
-  (setq org-todo-keywords
-	'((sequence "TODO" "DOING" "WAITING" "|" "DONE" )))
+    (setq org-todo-keywords
+	  '((sequence "TODO" "DOING" "WAITING" "|" "DONE" )))
 
-  (setq org-todo-keyword-faces
-	'(("TODO" . "#a4202a")
-	  ("DOING" . org-warning)
-	  ("WAITING" . "#dbbe5f")
-	  ))
-
+    (setq org-todo-keyword-faces
+	  '(("TODO" . "#a4202a")
+	    ("DOING" . org-warning)
+	    ("WAITING" . "#dbbe5f")
+	    ))
   ;; Colors are from https://protesilaos.com/emacs/modus-themes-colors
+
+  ;; Capture
+
+  (setq org-default-notes-file (concat org-directory "~/lms/in.org"))
+
+  (setq org-capture-templates
+	'(("p" "personal action" entry (file+headline "~/lms/actions.org" "Personal")
+	   "*** TODO %?\n  %i\n")
+	  ("w" "work action" entry (file+headline "~/lms/actions.org" "Work")
+	   "*** TODO %?\n  %i\n")
+	  ("a" "agenda" entry (file+headline "~/lms/cal.org" "Calendar")
+	   "** TODO %?\n  %i\n")
+	  ("j" "journal entry" entry (file+headline "~/lms/journal.org" "Journal")
+	   "* %(shell-command-to-string \"date '+%d-%m-%Y'\") %i %?")))
+
+
+  ;; Agenda
+  (setq org-agenda-files '("~/lms/cal.org"))
+
 #+end_src
 
 
 * Writing
 #+begin_src emacs-lisp
-  ;; spellcheck
+  (setq org-hide-emphasis-markers t)
+
+    ;; spellcheck
+
+    ;; toc-org
+    (if (require 'toc-org nil t)
+	(progn
+	  (add-hook 'org-mode-hook 'toc-org-mode)))
 #+end_src
+
+
 * Programming
 #+begin_src emacs-lisp
     ;; formatting
