@@ -3,3 +3,4 @@ config.el
 elpa
 straight
 transient
+projects

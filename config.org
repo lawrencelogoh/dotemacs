@@ -59,27 +59,29 @@
 
 * Install Packages
 #+begin_src emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-	(bootstrap-version 6))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-	  (url-retrieve-synchronously
-	   "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-	   'silent 'inhibit-cookies)
-	(goto-char (point-max))
-	(eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+	(url-retrieve-synchronously
+	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+	 'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-  (straight-use-package 'python-mode)
-  (straight-use-package 'go-mode)
-  (straight-use-package 'magit)
-  (straight-use-package 'reformatter)
+(straight-use-package 'python-mode)
+(straight-use-package 'go-mode)
+(straight-use-package 'magit)
+(straight-use-package 'reformatter)
 
-  (straight-use-package 'markdown-mode)
-  (straight-use-package 'olivetti)
-  (straight-use-package 'toc-org)
+(straight-use-package 'markdown-mode)
+(straight-use-package 'olivetti)
+(straight-use-package 'toc-org)
+
+
 
 #+end_src
 
@@ -108,7 +110,7 @@
 	  ("a" "agenda" entry (file+headline "~/lms/cal.org" "Calendar")
 	   "** TODO %?\n  %i\n")
 	  ("j" "journal entry" entry (file+headline "~/lms/journal.org" "Journal")
-	   "* %(shell-command-to-string \"date '+%d-%m-%Y'\") %i %?")))
+	   "\n* %(shell-command-to-string \"date '+%d-%m-%Y'\") %i %?")))
 
 
   ;; Agenda
@@ -119,23 +121,30 @@
 
 * Writing
 #+begin_src emacs-lisp
-  (setq org-hide-emphasis-markers t)
+(setq org-hide-emphasis-markers t)
 
-    ;; spellcheck
+;; spellcheck
+(add-hook 'text-mode-hook 'flyspell-mode)
 
-    ;; toc-org
-    (if (require 'toc-org nil t)
-	(progn
-	  (add-hook 'org-mode-hook 'toc-org-mode)))
+;; toc-org
+(if (require 'toc-org nil t)
+    (progn
+      (add-hook 'org-mode-hook 'toc-org-mode)))
 #+end_src
 
 
 * Programming
 #+begin_src emacs-lisp
-    ;; formatting
-
-    ;; hooks
-  (add-hook 'prog-mode-hook 'linum-mode)
+;; formatting
+;; code blocks
+(setq org-confirm-babel-evaluate nil)
+(setq org-edit-src-content-indentation 0)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t) (shell . t) (C . t) (js . t)))
+;; hooks
+(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+end_src
 * Global Keybindings
 #+begin_src emacs-lisp
