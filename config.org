@@ -167,7 +167,7 @@
 ;; general hooks
 (add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-;; go hooks
+;; format hooks
 (defvar my-format-modes '("go" "python"))
 
 (dolist (mode my-format-modes)
