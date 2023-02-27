@@ -44,14 +44,16 @@
 (put 'dired-find-alternate-file 'disabled nil)
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
-  (setq backup-directory-alist '(("." . "~/.bak"))
-	backup-by-copying t    
-	version-control t      
-	delete-old-versions t  
-	kept-new-versions 5   
-	kept-old-versions 2    
-	)
+(setq backup-directory-alist '(("." . "~/.config/emacs/backups/"))
+      backup-by-copying t    
+      version-control t      
+      delete-old-versions t  
+      kept-new-versions 5   
+      kept-old-versions 2    
+      )
 
+(setq auto-save-file-name-transforms
+  `((".*" "~/.config/emacs/autosaves/" t)))
 #+end_src
 
 * Install Packages
