@@ -6,3 +6,5 @@ transient
 projects
 autosaves
 backups
+packages
+eln-cache
