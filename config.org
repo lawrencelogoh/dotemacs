@@ -159,6 +159,11 @@
   :args '("-")
   :lighter " PYF")
 
+(reformatter-define js-format
+  :program "prettier"
+  :args '("--write" "--parser" "babel-flow")
+  :lighter " JSF")
+
 
 ;; code blocks
 (setq org-confirm-babel-evaluate nil)
@@ -170,7 +175,7 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 ;; format hooks
-(defvar my-format-modes '("go" "python"))
+(defvar my-format-modes '("go" "python" "js"))
 
 (dolist (mode my-format-modes)
   (add-hook (intern (concat mode "-mode-hook"))
