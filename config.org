@@ -71,7 +71,6 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'python-mode)
 (straight-use-package 'go-mode)
 (straight-use-package 'magit)
 (straight-use-package 'reformatter)
