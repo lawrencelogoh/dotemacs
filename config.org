@@ -79,6 +79,8 @@
 (straight-use-package 'olivetti)
 (straight-use-package 'toc-org)
 (straight-use-package 'org-tree-slide)
+(straight-use-package 'htmlize)
+(straight-use-package 'emmet-mode)
 
 
 
@@ -141,6 +143,7 @@
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
+(setq org-src-fontify-natively t)
 
 #+end_src
 
