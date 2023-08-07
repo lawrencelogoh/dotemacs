@@ -5,84 +5,54 @@
 - [[#productivity]["Productivity"]]
 - [[#writing][Writing]]
 - [[#programming][Programming]]
+- [[#custom-functions][Custom Functions]]
 - [[#global-keybindings][Global Keybindings]]
 
 * Quality of life
 #+begin_src emacs-lisp
 
 (setq inhibit-startup-message t)
+(setq ring-bell-function 'ignore)
+(setq scroll-conservatively most-positive-fixnum)
 
-;; disable tool, menu and scroll bar
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
-(setq ring-bell-function 'ignore)
-
-;; function to reload configuration
-(defun config-reload ()
-      (interactive)
-      (org-babel-load-file (expand-file-name "~/.config/emacs/config.org"))
-      ) 
-
-;; refresh buffer when file is modified on disk
+(pixel-scroll-precision-mode t)
 (global-auto-revert-mode 1)
+
+;; dired
+(put 'dired-find-alternate-file 'disabled nil)
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
 ;; font
 (add-to-list 'default-frame-alist
 	       '(font . "Hack-14"))
-(setq-default org-display-custom-times t)
-(setq org-time-stamp-custom-formats '("<%d-%m-%Y>" . "<%d-%m-%Y %H:%M>"))
-
 ;; theme
 (custom-set-faces
- `(fringe ((t (:background nil)))))
+ `(fringe ((t (:background unspecified)))))
 
 (setq modus-themes-slanted-constructs t
       modus-themes-bold-constructs t)
 (load-theme 'modus-vivendi)
-
-(put 'dired-find-alternate-file 'disabled nil)
-(add-hook 'dired-mode-hook 'dired-hide-details-mode)
-
-(setq backup-directory-alist '(("." . "~/.config/emacs/backups/"))
-      backup-by-copying t    
-      version-control t      
-      delete-old-versions t  
-      kept-new-versions 5   
-      kept-old-versions 2    
-      )
-
-(setq auto-save-file-name-transforms
-  `((".*" "~/.config/emacs/autosaves/" t)))
 #+end_src
 
 * Install Packages
 #+begin_src emacs-lisp
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
 
-(straight-use-package 'go-mode)
-(straight-use-package 'magit)
-(straight-use-package 'reformatter)
-
-(straight-use-package 'markdown-mode)
-(straight-use-package 'olivetti)
-(straight-use-package 'toc-org)
-(straight-use-package 'org-tree-slide)
-(straight-use-package 'htmlize)
-(straight-use-package 'emmet-mode)
-
-
+(use-package magit)
+(use-package reformatter)
+(use-package markdown-mode)
+(use-package olivetti)
+(use-package toc-org)
+(use-package org-tree-slide)
+(use-package htmlize)
+(use-package emmet-mode)
+(use-package ledger-mode)
 
 #+end_src
 
@@ -112,7 +82,6 @@
 	   "** TODO %?\n  %i\n")
 	  ("j" "journal entry" entry (file+headline "~/lms/journal.org" "Journal")
 	   "\n* %(shell-command-to-string \"date '+%d-%m-%Y'\") %i %?")))
-
 
   ;; Agenda
   (setq org-agenda-files '("~/lms/cal.org"))
@@ -151,21 +120,6 @@
 * Programming
 #+begin_src emacs-lisp
 ;; formatting
-(reformatter-define go-format
-  :program "gofmt"
-  :lighter " GF")
-
-
-(reformatter-define python-format
-  :program "black"
-  :args '("-")
-  :lighter " PYF")
-
-(reformatter-define js-format
-  :program "prettier"
-  :args '("--write" "--parser" "babel-flow")
-  :lighter " JSF")
-
 
 ;; code blocks
 (setq org-confirm-babel-evaluate nil)
@@ -174,19 +128,22 @@
  'org-babel-load-languages
  '((python . t) (shell . t) (C . t) (js . t)))
 ;; general hooks
-(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-;; format hooks
-(defvar my-format-modes '("go" "python" "js"))
-
-(dolist (mode my-format-modes)
-  (add-hook (intern (concat mode "-mode-hook"))
-            (intern (concat mode "-format-on-save-mode"))))
 #+end_src
+
+* Custom Functions
+#+begin_src elisp
+(defun config-reload ()
+      (interactive)
+      (org-babel-load-file (expand-file-name "~/.config/emacs/config.org"))
+      ) 
+#+end_src
+
 * Global Keybindings
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c t") 'ansi-term)
+(global-set-key (kbd "C-c t") 'term)
 (global-set-key (kbd "C-c r") 'config-reload)
 (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
 (global-set-key (kbd "C-z") 'replace-string)
