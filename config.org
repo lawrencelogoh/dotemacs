@@ -10,10 +10,11 @@
 
 * Quality of life
 #+begin_src emacs-lisp
-
-(setq inhibit-startup-message t)
-(setq ring-bell-function 'ignore)
-(setq scroll-conservatively most-positive-fixnum)
+(setq inhibit-startup-message t
+      ring-bell-function 'ignore
+      initial-scratch-message (message ";;; Emacs loaded in %s.\n\n" (emacs-init-time))
+      scroll-conservatively most-positive-fixnum
+      org-startup-folded t)
 
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -32,11 +33,8 @@
 (custom-set-faces
  `(fringe ((t (:background unspecified)))))
 
-(setq modus-themes-slanted-constructs t
-      modus-themes-bold-constructs t)
 (load-theme 'modus-vivendi)
 #+end_src
-
 * Install Packages
 #+begin_src emacs-lisp
 (require 'package)
@@ -55,7 +53,6 @@
 (use-package ledger-mode)
 
 #+end_src
-
 
 * "Productivity"
 #+begin_src emacs-lisp
@@ -88,7 +85,6 @@
 
 #+end_src
 
-
 * Writing
 #+begin_src emacs-lisp
 (setq org-hide-emphasis-markers t)
@@ -116,7 +112,6 @@
 
 #+end_src
 
-
 * Programming
 #+begin_src emacs-lisp
 ;; formatting
@@ -143,7 +138,7 @@
 * Global Keybindings
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c t") 'term)
+(global-set-key (kbd "C-c t") 'ansi-term)
 (global-set-key (kbd "C-c r") 'config-reload)
 (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
 (global-set-key (kbd "C-z") 'replace-string)
