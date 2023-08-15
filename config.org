@@ -34,6 +34,29 @@
  `(fringe ((t (:background unspecified)))))
 
 (load-theme 'modus-vivendi)
+
+;; create backups and autosaves dirs if they don't exist
+(setq backups (concat (getenv "XDG_DATA_HOME") "/emacs/backups/"))
+(setq autosaves (concat (getenv "XDG_DATA_HOME") "/emacs/autosaves/"))
+
+(unless (and (file-exists-p backups)
+             (file-exists-p autosaves))
+  (make-directory backups t)
+  (make-directory autosaves t))
+
+
+;; Move backups and autosaves to XDG_DATA_HOME
+(setq backup-directory-alist `(("." . ,backups))
+      backup-by-copying t    
+      version-control t      
+      delete-old-versions t  
+      kept-new-versions 5   
+      kept-old-versions 2    
+      )
+
+(setq auto-save-file-name-transforms
+  `((".*" ,autosaves t)))
+
 #+end_src
 * Install Packages
 #+begin_src emacs-lisp
