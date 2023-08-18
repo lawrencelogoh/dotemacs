@@ -133,6 +133,11 @@
 
 (setq org-src-fontify-natively t)
 
+;; Wrap text at 72 columns
+(add-hook 'text-mode-hook #'auto-fill-mode)
+(setq-default fill-column 72)
+
+
 #+end_src
 
 * Programming
