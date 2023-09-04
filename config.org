@@ -70,10 +70,14 @@
 (use-package markdown-mode)
 (use-package olivetti)
 (use-package toc-org)
+(use-package haskell-mode)
 (use-package org-tree-slide)
 (use-package htmlize)
 (use-package emmet-mode)
 (use-package ledger-mode)
+(use-package markdown-toc)
+(use-package web-mode)
+(use-package rg)
 
 #+end_src
 
@@ -142,6 +146,8 @@
 
 * Programming
 #+begin_src emacs-lisp
+;; rip-grep
+(rg-enable-menu)
 ;; formatting
 
 ;; code blocks
@@ -153,6 +159,9 @@
 ;; general hooks
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;; javascript
+(setq js-indent-level 2)
 #+end_src
 
 * Custom Functions
