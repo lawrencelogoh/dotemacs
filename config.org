@@ -78,6 +78,7 @@
 (use-package markdown-toc)
 (use-package web-mode)
 (use-package rg)
+(use-package corfu)
 
 #+end_src
 
@@ -146,8 +147,18 @@
 
 * Programming
 #+begin_src emacs-lisp
-;; rip-grep
+;; Autocomplete
+
+(setq corfu-auto t
+      corfu-auto-delay 0
+      corfu-auto-prefix 1
+      corfu-cycle t
+      corfu-preselect 'prompt) 
+
+
+;; ripgrep
 (rg-enable-menu)
+
 ;; formatting
 
 ;; code blocks
@@ -156,12 +167,18 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t) (shell . t) (C . t) (js . t)))
-;; general hooks
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 ;; javascript
 (setq js-indent-level 2)
+
+;; hooks
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'prog-mode-hook 'flymake-mode)
+(add-hook 'prog-mode-hook 'corfu-mode)
+(add-hook 'prog-mode-hook 'eglot-ensure)
+
+
 #+end_src
 
 * Custom Functions
