@@ -25,6 +25,8 @@
 (pixel-scroll-precision-mode t)
 (global-auto-revert-mode 1)
 
+;; midnight-mode
+(midnight-mode 1) 
 ;; Change yes or no prompt to y or n
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -85,7 +87,7 @@
 (use-package ledger-mode) ; for managing finances with ledger
 
 (setq org-todo-keywords
-	'((sequence "TODO" "DOING" "WAITING" "|" "DONE" )))
+	'((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" )))
 
   (setq org-todo-keyword-faces
 	'(("TODO" . "#a4202a")
@@ -115,6 +117,11 @@
 
 ;; Agenda
 (setq org-agenda-files '("~/lms/cal.org"))
+
+;; Habits
+(add-to-list 'org-modules 'org-habit t)
+(setq org-habit-graph-column 40)
+(setq org-habit-show-habits-only-for-today nil)
 
 ;; spellcheck
 (add-hook 'text-mode-hook 'flyspell-mode)
@@ -189,6 +196,7 @@
 (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
 (global-set-key (kbd "C-z") 'replace-string)
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
 
 (add-to-list 'safe-local-variable-values '(eval add-hook 'after-save-hook
