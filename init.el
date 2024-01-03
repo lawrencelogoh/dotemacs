@@ -101,10 +101,17 @@
 (setq org-capture-templates
       '(("n" "next action" entry (file+headline "~/lms/actions.org" "Tasks")
 	 "** TODO %?\n  %i\n")
+	("i" "In box" entry (file+headline "~/lms/in.org" "In basket")
+	 "** %?\n  %i\n")
 	("a" "agenda" entry (file+headline "~/lms/cal.org" "Calendar")
 	 "** TODO %?\n  %i\n")
 	("j" "journal entry" entry (file "~/lms/journal.org")
-	 "\n* %(shell-command-to-string \"date '+%d-%m-%Y'\") %i %?")))
+	 "\n* %(shell-command-to-string \"date '+%d-%m-%Y'\") %i %?")	
+	("z" "zettel" entry
+	 (file (lambda ()
+		 (concat "~/zet/" (format-time-string "%Y") "/" (format-time-string "%s") ".org" )))
+	 "\n* %i %?")
+	))
 
 ;; Agenda
 (setq org-agenda-files '("~/lms/cal.org"))
