@@ -10,6 +10,7 @@
 (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000
 					 gc-cons-percentage 0.1)))
 
+(add-hook 'after-init-hook 'org-agenda-list)
 
 ;; set defaults I like
 (setq inhibit-startup-message t
@@ -87,7 +88,7 @@
 (use-package ledger-mode) ; for managing finances with ledger
 
 (setq org-todo-keywords
-	'((sequence "TODO(t)" "WAITING(w@/!)" "|" "DONE(d!)" )))
+	'((sequence "TODO(t)" "DOING(x)" "WAITING(w)" "|" "DONE(d)" )))
 
   (setq org-todo-keyword-faces
 	'(("TODO" . "#a4202a")
@@ -95,15 +96,17 @@
 	  ("WAITING" . "#dbbe5f")
 	  ))
 ;; Colors are from https://protesilaos.com/emacs/modus-themes-colors
+(setq org-log-into-drawer t)
 
 ;; Capture
 (setq org-capture-bookmark nil)
-(setq org-default-notes-file (concat org-directory "~/lms/in.org"))
+(setq org-directory "~/lms/")
+(setq org-default-notes-file (concat org-directory "in.org"))
 
 (setq org-capture-templates
       '(("n" "next action" entry (file+headline "~/lms/actions.org" "Tasks")
 	 "** TODO %?\n  %i\n")
-	("i" "In box" entry (file+headline "~/lms/in.org" "In basket")
+	("i" "In box" entry (file+headline org-default-notes-file "In basket")
 	 "** %?\n  %i\n")
 	("a" "agenda" entry (file+headline "~/lms/cal.org" "Calendar")
 	 "** TODO %?\n  %i\n")
@@ -116,7 +119,8 @@
 	))
 
 ;; Agenda
-(setq org-agenda-files '("~/lms/cal.org"))
+(setq org-agenda-files '("~/lms/cal.org" "~/lms/work.org"))
+(setq org-agenda-span 1)
 
 ;; Habits
 (add-to-list 'org-modules 'org-habit t)
@@ -184,6 +188,8 @@
 (dolist (mode my-format-modes)
   (add-hook (intern (concat mode "-mode-hook"))
             (intern (concat mode "-format-on-save-mode"))))
+
+(setq ledger-reconcile-default-commodity "GHS")
 
 (defun config-reload ()
       (interactive)
