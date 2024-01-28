@@ -79,6 +79,7 @@
 (use-package magit)
 (use-package reformatter)
 (use-package markdown-mode)
+(use-package corfu)
 (use-package olivetti)
 (use-package toc-org)
 (use-package org-tree-slide) ; for turning org documents into slideshows
@@ -86,6 +87,7 @@
 (use-package emmet-mode)
 (use-package go-mode)
 (use-package ledger-mode) ; for managing finances with ledger
+(use-package corfu)
 
 (setq org-todo-keywords
 	'((sequence "TODO(t)" "DOING(x)" "WAITING(w)" "|" "DONE(d)" )))
@@ -152,7 +154,10 @@
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (setq-default fill-column 72)
 
-;; formatting
+;; corfu
+(setq corfu-auto t)
+(setq corfu-auto-delay 0)
+(setq tcorfu-auto-prefix 1)
 
 ;; code blocks
 (setq org-confirm-babel-evaluate nil)
@@ -164,6 +169,8 @@
 ;; general hooks
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'prog-mode-hook 'eglot-ensure)
+(add-hook 'prog-mode-hook 'corfu-mode)
 
 
 ;; formatting

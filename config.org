@@ -98,6 +98,7 @@
 (use-package magit)
 (use-package reformatter)
 (use-package markdown-mode)
+(use-package corfu)
 (use-package olivetti)
 (use-package toc-org)
 (use-package org-tree-slide) ; for turning org documents into slideshows
@@ -105,6 +106,7 @@
 (use-package emmet-mode)
 (use-package go-mode)
 (use-package ledger-mode) ; for managing finances with ledger
+(use-package corfu)
 
 #+end_src
 
@@ -189,7 +191,10 @@ All you need is a pen and paper or in my case, an org file.
 
 * Programming
 #+begin_src emacs-lisp
-;; formatting
+;; corfu
+(setq corfu-auto t)
+(setq corfu-auto-delay 0)
+(setq tcorfu-auto-prefix 1)
 
 ;; code blocks
 (setq org-confirm-babel-evaluate nil)
@@ -201,6 +206,8 @@ All you need is a pen and paper or in my case, an org file.
 ;; general hooks
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'prog-mode-hook 'eglot-ensure)
+(add-hook 'prog-mode-hook 'corfu-mode)
 
 
 ;; formatting
