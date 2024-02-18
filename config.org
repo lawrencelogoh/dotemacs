@@ -1,8 +1,8 @@
 #+PROPERTY: header-args :tangle init.el
 * Lawrence Logoh's emacs config                                   :noexport:
-* Contents                                                        :TOC:
-- [[#quality-of-life][Quality of life]]
+* Contents                                                              :TOC:
 - [[#install-packages][Install Packages]]
+- [[#quality-of-life][Quality of life]]
 - [[#productivity]["Productivity"]]
 - [[#writing][Writing]]
 - [[#programming][Programming]]
@@ -10,6 +10,30 @@
 - [[#custom-functions][Custom Functions]]
 - [[#global-keybindings][Global Keybindings]]
 - [[#local-variables][Local Variables]]
+
+* Install Packages
+#+begin_src emacs-lisp
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+(use-package magit)
+(use-package reformatter)
+(use-package markdown-mode)
+(use-package corfu)
+(use-package olivetti)
+(use-package toc-org)
+(use-package org-tree-slide) ; for turning org documents into slideshows
+(use-package htmlize)
+(use-package emmet-mode)
+(use-package go-mode)
+(use-package ledger-mode) ; for managing finances with ledger
+(use-package corfu)
+(use-package dashboard)
+
+#+end_src
 
 * Quality of life
 #+begin_src emacs-lisp
@@ -25,7 +49,8 @@
 (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000
 					 gc-cons-percentage 0.1)))
 
-(add-hook 'after-init-hook 'org-agenda-list)
+;; (add-hook 'after-init-hook 'org-agenda-list)
+
 
 ;; set defaults I like
 (setq inhibit-startup-message t
@@ -86,30 +111,21 @@
 (setq auto-save-file-name-transforms
   `((".*" ,autosaves t)))
 
+;; Configure dashboard
+(setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 6)
+                        (registers . 5)))
+
+(setq dashboard-week-agenda nil)
+(setq dashboard-projects-backend  'project-el)
+(setq dashboard-center-content t)
+
+;; Start dashboard
+(require 'dashboard)
+(dashboard-setup-startup-hook)
 #+end_src
-* Install Packages
-#+begin_src emacs-lisp
-
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
-
-(use-package magit)
-(use-package reformatter)
-(use-package markdown-mode)
-(use-package corfu)
-(use-package olivetti)
-(use-package toc-org)
-(use-package org-tree-slide) ; for turning org documents into slideshows
-(use-package htmlize)
-(use-package emmet-mode)
-(use-package go-mode)
-(use-package ledger-mode) ; for managing finances with ledger
-(use-package corfu)
-
-#+end_src
-
 * "Productivity"
 I've created all these systems to be productive because I like them.
 You don't need them if your goal is to be productive.
