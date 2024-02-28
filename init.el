@@ -45,6 +45,7 @@
 (scroll-bar-mode -1)
 (pixel-scroll-precision-mode t)
 (global-auto-revert-mode 1)
+(setq auto-revert-use-notify nil)
 
 ;; midnight-mode
 (midnight-mode 1) 
@@ -105,6 +106,9 @@
 ;; Start dashboard
 (require 'dashboard)
 (dashboard-setup-startup-hook)
+
+;; Show dashboard in initial frame created by emacsclient
+(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 
 (setq org-todo-keywords
 	'((sequence "TODO(t)" "DOING(x)" "WAITING(w)" "|" "DONE(d)" )))
