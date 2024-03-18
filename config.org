@@ -32,6 +32,9 @@
 (use-package ledger-mode) ; for managing finances with ledger
 (use-package corfu)
 (use-package dashboard)
+(use-package blamer)
+(use-package rjsx-mode)
+
 
 #+end_src
 
@@ -213,6 +216,8 @@ All you need is a pen and paper or in my case, an org file.
 
 * Programming
 #+begin_src emacs-lisp
+;; blamer
+(global-blamer-mode t)
 ;; corfu
 (setq corfu-auto t)
 (setq corfu-auto-delay 0)
