@@ -34,6 +34,8 @@
 (use-package dashboard)
 (use-package blamer)
 (use-package rjsx-mode)
+(use-package svelte-mode)
+
 
 
 #+end_src
