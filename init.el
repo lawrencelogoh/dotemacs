@@ -15,7 +15,7 @@
 (use-package go-mode)
 (use-package ledger-mode) ; for managing finances with ledger
 (use-package corfu)
-(use-package dashboard)
+
 (use-package blamer)
 (use-package rjsx-mode)
 (use-package svelte-mode)
@@ -32,7 +32,7 @@
 (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000
 					 gc-cons-percentage 0.1)))
 
-;; (add-hook 'after-init-hook 'org-agenda-list)
+(add-hook 'after-init-hook 'org-agenda-list)
 
 
 ;; set defaults I like
@@ -95,24 +95,6 @@
 (setq auto-save-file-name-transforms
   `((".*" ,autosaves t)))
 
-;; Configure dashboard
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 6)
-                        (registers . 5)))
-
-(setq dashboard-week-agenda nil)
-(setq dashboard-projects-backend  'project-el)
-(setq dashboard-center-content t)
-
-;; Start dashboard
-(require 'dashboard)
-(dashboard-setup-startup-hook)
-
-;; Show dashboard in initial frame created by emacsclient
-(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-
 (setq org-todo-keywords
 	'((sequence "TODO(t)" "DOING(x)" "WAITING(w)" "|" "DONE(d)" )))
 
@@ -150,7 +132,7 @@
 
 ;; Habits
 (add-to-list 'org-modules 'org-habit t)
-(setq org-habit-graph-column 40)
+(setq org-habit-graph-column 45)
 (setq org-habit-show-habits-only-for-today nil)
 
 ;; spellcheck
