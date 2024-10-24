@@ -38,6 +38,7 @@
 (use-package rjsx-mode)
 (use-package svelte-mode)
 (use-package yaml-mode)
+(use-package haskell-mode)
 (use-package glsl-mode)
 (use-package nerd-icons) ;; vanity
 (use-package nerd-icons-dired) ;; vanity
@@ -47,6 +48,7 @@
 (use-package yasnippet)
 (use-package treesit-auto)
 (use-package meow)
+(use-package jinja2-mode)
 
 ;; Speed up startup
 (setq gc-cons-threshold most-positive-fixnum
@@ -410,7 +412,10 @@
 (setq treesit-language-source-alist
       '((typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
         (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-        (python . ("https://github.com/tree-sitter/tree-sitter-python"))))
+        (python . ("https://github.com/tree-sitter/tree-sitter-python"))
+	  (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
+	  (haskell . ("https://github.com/tree-sitter/tree-sitter-haskell"))
+	  ))
 
 (dolist (source treesit-language-source-alist)
   (unless (treesit-ready-p (car source))
@@ -419,9 +424,8 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-
-
-
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-ts-mode))
 
 
 ;; Wakatime
@@ -449,9 +453,6 @@
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 (add-hook 'web-mode-hook  'emmet-mode)
 (add-hook 'rjsx-mode-hook  'emmet-mode)
-
-
-;; formatting
 
 (setq ledger-reconcile-default-commodity "GHS")
 
