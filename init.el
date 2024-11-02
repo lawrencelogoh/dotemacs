@@ -50,6 +50,7 @@
 (use-package meow)
 (use-package jinja2-mode)
 (use-package deadgrep)
+(use-package nix-ts-mode)
 
 ;; Speed up startup
 (setq gc-cons-threshold most-positive-fixnum
@@ -428,6 +429,8 @@
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
+
 
 
 ;; Wakatime
@@ -458,24 +461,28 @@
 
 (setq ledger-reconcile-default-commodity "GHS")
 
-(defun zet-search ()
- "Search through Zettelkasten notes in ~/zet using deadgrep while excluding specific files."
- (interactive)
- (let ((zet-dir (expand-file-name "~/zet")))
-   ;; Check if directory exists
-   (unless (file-directory-p zet-dir)
-     (error "Zettelkasten directory ~/zet does not exist"))
-   
-   ;; Check if ripgrep is installed
-   (unless (executable-find "rg")
-     (error "ripgrep (rg) is not installed. Please install it first"))
+(defun config-reload ()
+  (interactive)
+  (load-file user-init-file)) 
 
-   (let* ((default-directory zet-dir)
-          (search-term (read-string "Search zettelkasten for: ")))
-     (let ((deadgrep-extra-arguments 
-            '("--glob" "!LICENSE" 
-              "--glob" "!README.md")))
-       (deadgrep search-term default-directory)))))
+(defun zet-search ()
+  "Search through Zettelkasten notes in ~/zet using deadgrep while excluding specific files."
+  (interactive)
+  (let ((zet-dir (expand-file-name "~/zet")))
+    ;; Check if directory exists
+    (unless (file-directory-p zet-dir)
+      (error "Zettelkasten directory ~/zet does not exist"))
+    
+    ;; Check if ripgrep is installed
+    (unless (executable-find "rg")
+      (error "ripgrep (rg) is not installed. Please install it first"))
+
+    (let* ((default-directory zet-dir)
+           (search-term (read-string "Search zettelkasten for: ")))
+      (let ((deadgrep-extra-arguments 
+             '("--glob" "!LICENSE" 
+               "--glob" "!README.md")))
+	(deadgrep search-term default-directory)))))
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c t") 'ansi-term)
