@@ -49,6 +49,7 @@
 (use-package treesit-auto)
 (use-package meow)
 (use-package jinja2-mode)
+(use-package deadgrep)
 
 ;; Speed up startup
 (setq gc-cons-threshold most-positive-fixnum
@@ -405,9 +406,10 @@
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (setq-default fill-column 72)
 
-;; Treesit-auto
+;; Treesitter
 (global-treesit-auto-mode)
 (setq treesit-auto-install 'prompt)
+(setq treesit-font-lock-level 4)
 
 (setq treesit-language-source-alist
       '((typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
@@ -456,14 +458,29 @@
 
 (setq ledger-reconcile-default-commodity "GHS")
 
-(defun config-reload ()
-      (interactive)
-      (load-file user-init-file)
-      )
+(defun zet-search ()
+ "Search through Zettelkasten notes in ~/zet using deadgrep while excluding specific files."
+ (interactive)
+ (let ((zet-dir (expand-file-name "~/zet")))
+   ;; Check if directory exists
+   (unless (file-directory-p zet-dir)
+     (error "Zettelkasten directory ~/zet does not exist"))
+   
+   ;; Check if ripgrep is installed
+   (unless (executable-find "rg")
+     (error "ripgrep (rg) is not installed. Please install it first"))
+
+   (let* ((default-directory zet-dir)
+          (search-term (read-string "Search zettelkasten for: ")))
+     (let ((deadgrep-extra-arguments 
+            '("--glob" "!LICENSE" 
+              "--glob" "!README.md")))
+       (deadgrep search-term default-directory)))))
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c t") 'ansi-term)
 (global-set-key (kbd "C-c r") 'config-reload)
+(global-set-key (kbd "C-c z") 'zet-search)
 (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
 (global-set-key (kbd "C-z") 'replace-string)
 (global-set-key (kbd "C-x g") 'magit-status)
