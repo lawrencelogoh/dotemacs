@@ -449,6 +449,27 @@
  'org-babel-load-languages
  '((mermaid . t) (python . t) (shell . t) (C . t) (js . t)))
 
+;; projects
+;; Replace shell with ansi-term
+(defun project-ansi-term ()
+  "Start an ansi-term in the current project's root directory."
+  (interactive)
+  (let* ((default-directory (project-root (project-current t)))
+         (buffer-name (format "%s-term" (project-name (project-current t))))
+         (existing-buffer (get-buffer buffer-name)))
+    (if existing-buffer
+        (switch-to-buffer existing-buffer)
+      (ansi-term (getenv "SHELL") buffer-name))))
+
+;; Advice to override project-shell with ansi-term
+(defun project-shell-override (orig-fun &rest args)
+  "Advice to replace project-shell with ansi-term."
+  (project-ansi-term))
+
+;; Apply the advice to project-shell
+(advice-add 'project-shell :around #'project-shell-override)
+
+
 ;; general hooks
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
