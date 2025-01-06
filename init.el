@@ -45,12 +45,15 @@
 (use-package wakatime-mode) ;; vanity
 (use-package ob-mermaid) ;; For using mermaid in org
 (use-package weblorg)
+(use-package tuareg)
 (use-package yasnippet)
 (use-package treesit-auto)
 (use-package meow)
 (use-package jinja2-mode)
 (use-package deadgrep)
 (use-package nix-ts-mode)
+(use-package flymake-eslint)
+(use-package auctex)
 
 ;; Speed up startup
 (setq gc-cons-threshold most-positive-fixnum
@@ -218,7 +221,10 @@
 (meow-setup)
 (meow-global-mode 1)
 
-(setq org-todo-keywords
+(setq org-lowest-priority ?E)
+(setq org-default-priority ?E)
+
+  (setq org-todo-keywords
 	'((sequence "TODO(t)" "DOING(x)" "WAITING(w)" "|" "DONE(d)" )))
 
   (setq org-todo-keyword-faces
@@ -242,12 +248,12 @@
 	("a" "agenda" entry (file+headline "~/lms/cal.org" "Calendar")
 	 "** TODO %?\n  %i\n")
 	("j" "journal entry" entry (file "~/lms/journal.org")
-	 "\n* %(shell-command-to-string \"date '+%d-%m-%Y'\") %i %?")	
+	 "\n* %(shell-command-to-string \"date '+%d-%m-%Y'\")%i%?")	
 	("z" "zettel" entry
 	 (file (lambda ()
 		 (concat "~/zet/" (format-time-string "%Y") "/" (format-time-string "%s") ".org" )))
 	 "\n* %i %?")
-	))
+	))                       
 
 ;; Agenda
 (setq org-agenda-files '("~/lms/cal.org" "~/lms/work.org"))
@@ -281,6 +287,7 @@
 
 
 (setq org-latex-compiler "xelatex")
+(setq org-export-allow-bind-keywords t)
 (setq org-latex-pdf-process
       (list (concat "latexmk -"
                     org-latex-compiler 
@@ -361,7 +368,7 @@
 	    showstringspaces=false,
 	    columns=fullflexible,
 	    keepspaces=true}
-\\usepackage[a4paper,margin=1in,left=1.5in]{geometry}
+\\usepackage[a4paper,margin=1in,left=1.5in,right=1.5in]{geometry}
 \\usepackage{parskip}
 \\makeatletter
 \\renewcommand{\\maketitle}{%
