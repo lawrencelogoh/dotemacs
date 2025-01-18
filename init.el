@@ -494,9 +494,10 @@
   (load-file user-init-file)) 
 
 (defun zet-search ()
-  "Search through Zettelkasten notes in ~/zet using deadgrep while excluding specific files."
+  "Search through Zettelkasten notes in ~/zet using deadgrep"
   (interactive)
   (let ((zet-dir (expand-file-name "~/zet")))
+
     ;; Check if directory exists
     (unless (file-directory-p zet-dir)
       (error "Zettelkasten directory ~/zet does not exist"))
@@ -504,13 +505,17 @@
     ;; Check if ripgrep is installed
     (unless (executable-find "rg")
       (error "ripgrep (rg) is not installed. Please install it first"))
-
+    
+    ;; Set the extra arguments before creating the search buffer
+    (setq-local deadgrep-extra-arguments 
+                '("--glob" "!LICENSE" 
+                  "--glob" "!README.md"))
+    
     (let* ((default-directory zet-dir)
-           (search-term (read-string "Search zettelkasten for: ")))
-      (let ((deadgrep-extra-arguments 
-             '("--glob" "!LICENSE" 
-               "--glob" "!README.md")))
-	(deadgrep search-term default-directory)))))
+           (search-term (read-string "Search zettelkasten: ")))
+      ;; Ensure deadgrep-project-root is set
+      (setq-local deadgrep-project-root default-directory)
+      (deadgrep search-term))))
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c t") 'ansi-term)
