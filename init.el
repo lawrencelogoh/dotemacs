@@ -476,6 +476,33 @@
 ;; Apply the advice to project-shell
 (advice-add 'project-shell :around #'project-shell-override)
 
+;; Formatting modes
+(reformatter-define go-format
+  :program "gofmt"
+  :lighter " GF")
+
+
+(reformatter-define python-format
+  :program "black"
+  :args '("-")
+  :lighter " PYF")
+
+(reformatter-define js-format
+  :program "prettier"
+  :args '("--write" "--parser" "babel-flow")
+  :lighter " JSF")
+
+(reformatter-define tsx-ts-format
+  :program "prettier"
+  :args '("--write" "--parser" "babel-flow")
+  :lighter " TSF")
+
+(defvar my-format-modes '("go" "python" "js" "tsx-ts"))
+
+(dolist (mode my-format-modes)
+  (add-hook (intern (concat mode "-mode-hook"))
+            (intern (concat mode "-format-on-save-mode"))))
+
 
 ;; general hooks
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
