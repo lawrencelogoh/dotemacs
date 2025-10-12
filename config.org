@@ -340,12 +340,17 @@ All you need is a pen and paper or in my case, an org file.
 (setq org-habit-graph-column 45)
 (setq org-habit-show-habits-only-for-today nil)
 
+;; Timer
+
+(setq org-clock-sound "~/.config/emacs/bell.wav")
+
+
 ;; Yasnippet
 (setq yas-snippet-dirs
       '("~/.config/emacs/snippets"            
         ))
 
-(yas-global-mode 1) 
+(yas-global-mode 1)
 
 #+end_src
 

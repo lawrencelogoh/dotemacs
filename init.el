@@ -313,6 +313,11 @@
 (setq org-habit-graph-column 45)
 (setq org-habit-show-habits-only-for-today nil)
 
+;; Timer
+
+(setq org-clock-sound "~/.config/emacs/bell.wav")
+
+
 ;; Yasnippet
 (setq yas-snippet-dirs
       '("~/.config/emacs/snippets"            
