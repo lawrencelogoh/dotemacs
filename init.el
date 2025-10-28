@@ -117,9 +117,11 @@
 
 
 ;; set defaults I like
+(setq initial-major-mode 'org-mode)
+
 (setq inhibit-startup-message t
       ring-bell-function 'ignore
-      initial-scratch-message (message ";; Emacs loaded in %s.\n\n" (emacs-init-time))
+      initial-scratch-message (message "Emacs loaded in %s.\n\n" (emacs-init-time))
       scroll-conservatively most-positive-fixnum
       org-startup-folded t)
 
@@ -575,6 +577,7 @@
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
 (add-hook 'web-mode-hook  'emmet-mode)
 (add-hook 'rjsx-mode-hook  'emmet-mode)
+(add-hook 'ts-tsx-mode-hook  'emmet-mode)
 
 (setq ledger-reconcile-default-commodity "GHS")
 
