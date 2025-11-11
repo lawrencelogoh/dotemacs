@@ -284,12 +284,29 @@
 	  ("WAITING" . "#dbbe5f")
 	  ))
 ;; Colors are from https://protesilaos.com/emacs/modus-themes-colors
+
+
+(defun my/org-sort-custom ()
+  "Sort Org entries so DOING is first, DONE is last."
+  (interactive)
+  (org-sort-entries nil ?f
+                    (lambda ()
+                      (let ((state (org-get-todo-state)))
+                        (cond
+                         ((equal state "DOING") 0)
+                         ((equal state "TODO") 1)
+                         ((equal state "WAITING") 2)
+                         ((equal state "DONE") 3)
+                         (t 4))))))
+
+(define-key org-mode-map (kbd "C-c s") #'my/org-sort-custom)
 (setq org-log-into-drawer t)
 
 ;; Capture
 (setq org-capture-bookmark nil)
 (setq org-directory "~/lms/")
 (setq org-default-notes-file (concat org-directory "in.org"))
+
 
 (setq org-capture-templates
       '(("n" "next action" entry (file+headline "~/lms/actions.org" "Tasks")
