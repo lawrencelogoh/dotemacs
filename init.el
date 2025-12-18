@@ -29,6 +29,11 @@
 (use-package corfu)
 (use-package olivetti)
 (use-package toc-org)
+(use-package vterm
+  :ensure t
+  :custom
+  (vterm-module-cmake-args
+   "-DUSE_SYSTEM_LIBVTERM=ON"))
 (use-package org-tree-slide) ; for turning org documents into slideshows
 (use-package htmlize)
 (use-package emmet-mode)
@@ -51,6 +56,7 @@
 ;; (use-package meow)
 (use-package jinja2-mode)
 (use-package deadgrep)
+(use-package wgrep)
 (use-package nix-ts-mode)
 (use-package flymake-eslint)
 (use-package auctex)
@@ -103,6 +109,14 @@
 
   (add-hook 'jtsx-jsx-mode-hook 'jtsx-bind-keys-to-jtsx-jsx-mode-map)
   (add-hook 'jtsx-tsx-mode-hook 'jtsx-bind-keys-to-jtsx-tsx-mode-map))
+;; (use-package wasabi :vc (:url "https://github.com/xenodium/wasabi"))
+
+(use-package acp)
+(use-package wasabi
+  :straight (wasabi
+             :type git
+             :host github
+             :repo "xenodium/wasabi"))
 
 ;; Speed up startup
 (setq gc-cons-threshold most-positive-fixnum
