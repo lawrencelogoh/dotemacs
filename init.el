@@ -552,21 +552,21 @@
  '((mermaid . t) (python . t) (shell . t) (C . t) (js . t)))
 
 ;; projects
-;; Replace shell with ansi-term
-(defun project-ansi-term ()
-  "Start an ansi-term in the current project's root directory."
+;; Replace shell with vterm
+(defun project-vterm ()
+  "Start a vterm in the current project's root directory."
   (interactive)
   (let* ((default-directory (project-root (project-current t)))
          (buffer-name (format "%s-term" (project-name (project-current t))))
          (existing-buffer (get-buffer buffer-name)))
     (if existing-buffer
         (switch-to-buffer existing-buffer)
-      (ansi-term (getenv "SHELL") buffer-name))))
+      (vterm buffer-name))))
 
-;; Advice to override project-shell with ansi-term
+;; Advice to override project-shell with vterm
 (defun project-shell-override (orig-fun &rest args)
-  "Advice to replace project-shell with ansi-term."
-  (project-ansi-term))
+  "Advice to replace project-shell with vterm."
+  (project-vterm))
 
 ;; Apply the advice to project-shell
 (advice-add 'project-shell :around #'project-shell-override)
@@ -647,7 +647,7 @@
       (deadgrep search-term))))
 
 (global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c t") 'ansi-term)
+(global-set-key (kbd "C-c t") 'vterm)
 (global-set-key (kbd "C-c r") 'config-reload)
 (global-set-key (kbd "C-c z") 'zet-search)
 (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
