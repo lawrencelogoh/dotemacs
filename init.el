@@ -47,7 +47,6 @@
 (use-package glsl-mode)
 (use-package nerd-icons) ;; vanity
 (use-package nerd-icons-dired) ;; vanity
-(use-package wakatime-mode) ;; vanity
 (use-package ob-mermaid) ;; For using mermaid in org
 (use-package weblorg)
 (use-package tuareg)
@@ -195,6 +194,10 @@
 (setq auto-save-file-name-transforms
   `((".*" ,autosaves t)))
 
+
+;; Macos stuff
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier 'none)
 ;; Meow config
 ;; (defun meow-setup ()
 ;;   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -534,9 +537,6 @@
 
 
 
-;; Wakatime
-(global-wakatime-mode)
-(setq wakatime-api-key (getenv "WAKATIME_API_KEY"))
 ;; Make eglot faster with tsserver
 (fset #'jsonrpc--log-event #'ignore)
 ;; corfu
