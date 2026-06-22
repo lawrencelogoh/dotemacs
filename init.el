@@ -347,8 +347,7 @@
 ;; Habits
 (add-to-list 'org-modules 'org-habit t)
 (setq org-habit-graph-column 45)
-(setq org-habit-show-habits-only-for-today nil)
-
+(setq org-habit-show-habits-only-for-today t)
 ;; Timer
 
 (setq org-clock-sound "~/.config/emacs/bell.wav")
@@ -584,19 +583,17 @@
 
 (reformatter-define js-format
   :program "prettier"
-  :args '("--write" "--parser" "babel-flow")
+  :args '("--write" "--parser" "babel")
   :lighter " JSF")
 
-(reformatter-define tsx-ts-format
+(reformatter-define ts-format
   :program "prettier"
-  :args '("--write" "--parser" "babel-flow")
+  :args '("--write" "--parser" "babel-ts")
   :lighter " TSF")
 
-(defvar my-format-modes '("go" "python" "js" "tsx-ts"))
-
-(dolist (mode my-format-modes)
-  (add-hook (intern (concat mode "-mode-hook"))
-            (intern (concat mode "-format-on-save-mode"))))
+(add-hook 'jtsx-jsx-mode-hook 'js-format-on-save-mode)
+(add-hook 'jtsx-tsx-mode-hook 'ts-format-on-save-mode)
+(add-hook 'jtsx-typescript-mode-hook 'ts-format-on-save-mode)
 
 
 ;; general hooks
@@ -614,8 +611,8 @@
 
 (setq ledger-reports
       '(("Balance"              "ledger -f %(ledger-file) bal")
+        ("Receivables"          "ledger -f %(ledger-file) bal Assets:Receivables")
         ("Debts Overview"       "ledger -f %(ledger-file) bal Assets:Receivables Liabilities:Payables")
-        ("Receivables register" "ledger -f %(ledger-file) reg Assets:Receivables")
         ("Payables register"    "ledger -f %(ledger-file) reg Liabilities:Payables")))
 
 (defun config-reload ()
