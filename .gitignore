@@ -9,3 +9,6 @@ backups
 packages
 eln-cache
 snippets
+.DS_Store
+tree-sitter
+tramp

@@ -59,6 +59,8 @@
 (use-package nix-ts-mode)
 (use-package flymake-eslint)
 (use-package auctex)
+
+(use-package ghostel)
 (use-package jtsx
   :ensure t
   :mode (("\\.jsx?\\'" . jtsx-jsx-mode)
@@ -108,14 +110,6 @@
 
   (add-hook 'jtsx-jsx-mode-hook 'jtsx-bind-keys-to-jtsx-jsx-mode-map)
   (add-hook 'jtsx-tsx-mode-hook 'jtsx-bind-keys-to-jtsx-tsx-mode-map))
-;; (use-package wasabi :vc (:url "https://github.com/xenodium/wasabi"))
-
-(use-package acp)
-(use-package wasabi
-  :straight (wasabi
-             :type git
-             :host github
-             :repo "xenodium/wasabi"))
 
 ;; Speed up startup
 (setq gc-cons-threshold most-positive-fixnum
@@ -288,6 +282,14 @@
 ;; (require 'meow)
 ;; (meow-setup)
 ;; (meow-global-mode 1)
+
+;; org
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states)   ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 (setq org-lowest-priority ?E)
 (setq org-default-priority ?E)
@@ -644,7 +646,7 @@
       (deadgrep search-term))))
 
 (global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c t") 'vterm)
+(global-set-key (kbd "C-c t") 'ghostel)
 (global-set-key (kbd "C-c r") 'config-reload)
 (global-set-key (kbd "C-c z") 'zet-search)
 (global-set-key (kbd "M-<f2>") 'modus-themes-toggle) ; toggle light and dark modus themes
