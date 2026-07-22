@@ -44,11 +44,6 @@
 (use-package corfu)
 (use-package olivetti)
 (use-package toc-org)
-(use-package vterm
-  :ensure t
-  :custom
-  (vterm-module-cmake-args
-   "-DUSE_SYSTEM_LIBVTERM=ON"))
 (use-package org-tree-slide) ; for turning org documents into slideshows
 (use-package htmlize)
 (use-package emmet-mode)

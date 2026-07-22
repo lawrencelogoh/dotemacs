@@ -29,11 +29,6 @@
 (use-package corfu)
 (use-package olivetti)
 (use-package toc-org)
-(use-package vterm
-  :ensure t
-  :custom
-  (vterm-module-cmake-args
-   "-DUSE_SYSTEM_LIBVTERM=ON"))
 (use-package org-tree-slide) ; for turning org documents into slideshows
 (use-package htmlize)
 (use-package emmet-mode)
@@ -553,21 +548,21 @@
  '((mermaid . t) (python . t) (shell . t) (C . t) (js . t)))
 
 ;; projects
-;; Replace shell with vterm
-(defun project-vterm ()
-  "Start a vterm in the current project's root directory."
+;; Replace shell with ghostel
+(defun project-ghostel ()
+  "Start a ghostel in the current project's root directory."
   (interactive)
   (let* ((default-directory (project-root (project-current t)))
          (buffer-name (format "%s-term" (project-name (project-current t))))
          (existing-buffer (get-buffer buffer-name)))
     (if existing-buffer
         (switch-to-buffer existing-buffer)
-      (vterm buffer-name))))
+      (ghostel buffer-name))))
 
-;; Advice to override project-shell with vterm
+;; Advice to override project-shell with ghostel
 (defun project-shell-override (orig-fun &rest args)
-  "Advice to replace project-shell with vterm."
-  (project-vterm))
+  "Advice to replace project-shell with ghostel."
+  (project-ghostel))
 
 ;; Apply the advice to project-shell
 (advice-add 'project-shell :around #'project-shell-override)
